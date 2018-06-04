@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{Title}{block:PermalinkPage} | {block:PostSummary}{PostSummary}{/block:PostSummary}{/block:PermalinkPage}{block:TagPage} | #{Tag}{/block:TagPage}</title>
+        <link rel="shortcut icon" href="{Favicon}">
+        <link rel="alternate" type="application/rss+xml" href="{RSS}">
+        {block:Description}
+            <meta name="description" content="{MetaDescription}" />
+        {/block:Description}
+        <style>
+            * {
+                box-sizing: border-box;
+                font-family: {TitleFont}, "Helvetica Neue", HelveticaNeue, Arial, sans-serif;
+            }
+            
+            body {
+                padding-top: 1px;
+                background: {BackgroundColor};
+            }
+            
+            a {
+                text-decoration: none;
+                color: {AccentColor};
+            }
+            
+            h3 {
+                margin: 0;
+                padding: 0;
+            }
+            
+            ul {
+                margin: 0;
+                padding: 0;
+            }
+            
+            ul li {
+                list-style: none;
+                margin: 2px;
+                vertical-align: top;
+            }
+            
+            figure {
+                width: 128px;
+                height: 128px;
+                margin: 0;
+                padding: 0;
+            }
+            
+            p {
+                margin-top: .25em;
+                margin-bottom: .25em;
+            }
+            
+            blockquote {
+                margin: 0;
+                margin-left: 2px;
+                padding-left: 2px;
+                border-left: solid 2px {TitleColor};
+            }
+            
+            .header-ul {
+                display: flex;
+            }
+            
+            @media (max-width:288px) {
+                .header-ul {
+                    display: inline-block;
+                }
+            }
+            
+            .header {
+                width: 100%;
+                min-width: 128px;
+                height: 128px;
+                margin-left: 2px;
+                margin-right: 2px;
+                padding: 5px;
+                letter-spacing: normal;
+                background: url("{HeaderImage}") center scroll;
+            }
+            
+            .blog-title {
+                margin: 0;
+                padding: 0;
+                letter-spacing: normal;
+                font-size: 4em;
+                color: {TitleColor};
+            }
+            
+            .inline-nav {
+                letter-spacing: -.4em;
+            }
+            
+            .nav-item {
+                display: inline-block;
+                position: relative;
+                width: 128px;
+                height: 128px;
+                letter-spacing: normal;
+                border: solid 2px {TitleColor};
+                color: {TitleColor};
+            }
+            
+            .current-page, .nav-item--tag, .nav-item:hover {
+                background-color: {TitleColor};
+                color: {BackgroundColor};
+            }
+            
+            .nav-label {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translateY(-50%) translateX(-50%);
+                -webkit- transform: translateY(-50%) translateX(-50%);
+                text-align: center;
+            }
+            
+            .nav-item a {
+                display: block;
+                position: absolute;
+                z-index: 1;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+            
+            .posts {
+                letter-spacing: -.4em;
+            }
+            
+            .post {
+                display: inline-block;
+                position: relative;
+                width: 260px;
+                height: 260px;
+                margin: 2px;
+                padding: 2px;
+                vertical-align: top;
+                letter-spacing: normal;
+                overflow: hidden;
+                background: #fff;
+                border: solid 1px #eee;
+            }
+            
+            .posterlink, .posterlink img {
+                vertical-align: top;
+                font-size: 24px;
+                color: {TitleColor};
+            }
+            
+            .poster {
+                position: relative;
+                height: 24px;
+                margin-bottom: 10px;
+                z-index: 3;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+            
+            .title {
+                position: absolute;
+                bottom: 0;
+                z-index: 2;
+                font-size: 3em;
+                color: {TitleColor};
+            }
+            
+            .main ul li, .caption ul li {
+                margin: 0;
+                list-style: circle inside;
+            }
+            
+            .main ol li, .caption ol li{
+                list-style: decimal inside;
+            }
+            
+            .main ul, ol .caption ul, ol{
+                margin: 0;
+                padding: 0;
+            }
+            
+            .main p {
+                margin: 2px;
+            }
+            
+            .perma {
+                display: block;
+                position: absolute;
+                z-index: 2;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+            
+            .pop {
+                display: none;
+            }
+            
+            .post:hover > .pop {
+                display: block;
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 0;
+                width: 100%;
+                height: 100%;
+                background: {TitleColor};
+                opacity: 0.8;
+            }
+            
+            .post:hover > .title {
+                color: #fff;
+            }
+            
+            .post:hover > .poster {
+                background: #fff;
+            }
+            
+            .tag {
+                display: inline-block;
+                text-overflow: ellipsis;
+            }
+            
+            .pop-content {
+                position: absolute;
+                top: 24px;
+                margin: 2px;
+                color: #fff;
+                text-overflow: ellipsis;
+            }
+            
+            .photo .main, .panorama .main, .photoset .main, .video .main, .audio .main{
+                position: absolute;
+                top: 0;
+                left: 0;
+            } 
+            
+            .photo .main img, .panorama .main img, .video .main iframe, .audio .main iframe {
+                min-width: 260px;
+                min-height: 260px;
+            }
+            
+            .link .main {
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+            
+            .source {
+                margin-left: 8px;
+                color: #999;
+                font-size: 75%;
+            }
+            
+            .source:before {
+                content: "―";
+            }
+            
+            .chattext {
+                letter-spacing: normal;
+                border-bottom: solid 1px #bbb;
+                list-style: none !important;
+            }
+            
+            .label {
+                font-weight: bold;
+            }
+            
+            .prev:before {
+                content: "< ";
+            }
+            
+            .next:after {
+                content: " >";
+            }
+            
+            .inline-nav-here {
+                display: flex;
+            }
+            
+            .nav-item--here {
+                position: relative;
+                width: 100%;
+                min-width: 128px;
+                height: 128px;
+                border: solid 2px {TitleColor};
+                color: {TitleColor};
+            }
+            
+            .pagejump {
+                width: 100%;
+                height: 100%;
+                text-align: center;
+            }
+            
+            .jump {
+                display: inline-block;
+                position: relative;
+                letter-spacing: normal;
+                width: 20%;
+                height: 100%;
+                margin: 0;
+                color: {TitleColor};
+            }
+            
+            .jump a {
+                display: block;
+                position: absolute;
+                z-index: 1;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                color: {TitleColor};
+            }
+            
+            .jump-current, .jump-jump:hover {
+                color: {BackgroundColor};
+                background-color: {TitleColor};
+            }
+            
+            .here {
+                border-left: solid 2px {TitleColor};
+                border-right: solid 2px {TitleColor};
+                color: {TitleColor};
+                background: {BackgroundColor};
+            }
+            
+            .permalinkpage {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            
+            .perma-page {
+                width: 75%;
+                min-width: 260px;
+                margin: 2px;
+                padding: 4px;
+                border: solid 1px #eee;
+                background: #fff;
+            }
+            
+            .header-poster {
+                vertical-align: bottom;
+                font-size: 24px;
+                color: {TitleColor};
+            }
+            
+            .perma-photo img, .perma-panorama img, .thumbnail, .perma-audio iframe, .perma-video iframe, .tumblr_video_container {
+                max-width: 100%;
+                vertical-align: bottom;
+            }
+            
+            .perma-photo img, .perma-panorama img, .thumbnail {
+                height: auto;
+            }
+            
+            .perma-photo, .perma-panorama, .linkcard, .perma-audio, .perma-video, .tumblr_video_container {
+                text-align: center;
+            }
+            
+            .perma-photoset iframe {
+                padding-left: 12.5%;
+                padding-right: 12.5%;
+            }
+            
+            .perma-main {
+                padding: 1ex;
+                border-top: solid 1px #eee;
+                border-bottom: solid 1px #eee;
+            }
+            
+            .linkcard {
+                position: relative;
+                border: solid 1px #eee;
+                background: #eee;
+            }
+            
+            .link .main h5, .linkcard h5 {
+                margin-top: 0;
+                margin-bottom: 0;
+                font-size: 1.5em;
+                color: #222;
+            }
+            
+            .linkname {
+                text-align: left;
+                padding: 2px;
+                border-top: solid 1px #eee;
+                background: #fff;
+            }
+            
+            .cardlink {
+                display: block;
+                position: absolute;
+                z-index: 1;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+            
+            .perma-text h4, .perma-chat h4 {
+                margin-top: .2ex;
+                margin-bottom: .2ex;
+                font-size: calc(3em + 1.5vw);
+                color: {TitleColor};
+            }
+            
+            .perma-text ul li, .perma-caption ul li {
+                margin: 0;
+                list-style: circle inside;
+            }
+            
+            .perma-text ol li, .perma-caption ol li {
+                list-style: decimal inside;
+            }
+            
+            .date {
+                text-align: right;
+                font-size: calc(0.5em + 5vw);
+                color: {TitleColor};
+                vertical-align: bottom;
+            }
+        </style>
+    </head>
+    <body>
+        <header class="top-header">
+            <ul class="header-ul">
+                <li class="header-li">
+                    <figure class="avator">
+                        <a href="/"><img src="{PortraitURL-128}" alt=""></a>
+                    </figure>
+                </li>
+                <li class="header-li header">
+                    {block:ShowTitle}
+                        <a href="/"><h1 class="blog-title">{Title}</h1></a>
+                    {/block:ShowTitle}
+                    {block:Description}
+                        <p id="description">{Description}</p>
+                    {/block:Description}
+                </li>
+            </ul>
+            <div class="{block:HideTitle}{block:HideDescription}no-title-desc {/block:HideDescription}{/block:HideTitle}nav-wrapper nav-responsive">
+                <nav class="nav-menu">
+                    <ul class="inline-nav">
+                        <li class="nav-item nav-item--posts {block:HomePage}current-page{/block:HomePage}">
+                            <div class="nav-label">{lang:Posts}</div>
+                            <a href="/"></a>
+                        </li>
+                        {block:Likes}
+                            <li class="nav-item nav-item--likes {block:LikesPage}current-page{/block:LikesPage}">
+                                <div class="nav-label">{lang:Likes}</div>
+                                <a href="/likes"></a>
+                            </li>
+                        {/block:Likes}
+                        {block:ShareFollowing}
+                            <li class="nav-item nav-item--following {block:FollowingPage}current-page{/block:FollowingPage}">
+                                <div class="nav-label">{lang:Following}</div>
+                                <a href="/following"></a>
+                            </li>
+                        {/block:ShareFollowing}
+                        {block:AskEnabled}
+                            <li class="nav-item nav-item--ask {block:AskPage}current-page{/block:AskPage}">
+                                <div class="nav-label">{AskLabel}</div>
+                                <a href="/ask"></a>
+                            </li>
+                        {/block:AskEnabled}
+                        {block:SubmissionsEnabled}
+                            <li class="nav-item nav-item--submit {block:SubmitPage}current-page{/block:SubmitPage}">
+                                <div class="nav-label">{SubmitLabel}</div>
+                                <a href="/submit"></a>
+                            </li>
+                        {/block:SubmissionsEnabled}
+                        {block:HasPages}
+                            {block:Pages}
+                                <li class="nav-item nav-item--page {CurrentState} {ExternalState}">
+                                    <div class="nav-label">{Label}</div>
+                                    <a href="{URL}"></a>
+                                </li>
+                            {/block:Pages}
+                        {/block:HasPages}
+                        {block:TagPage}
+                            <li class="nav-item nav-item--tag {CurrentState} {ExternalState}">
+                                <div class="nav-label">#{Tag}</div>
+                            </li>
+                        {/block:TagPage}
+                        <li class="nav-item nav-item--archive">
+                            <div class="nav-label">{lang:Archive}</div>
+                            <a href="/archive" class="external-page"></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        {block:IndexPage}
+        <section class="posts">
+            {block:Posts}
+                {block:Text}
+                    <div class="post text">
+                        <div class="poster">
+                            {block:NotReblog}
+                                <a class="posterlink" href="/"><img src="{PortraitURL-24}">naduya-nagi</a>
+                            {/block:NotReblog}
+                            {block:RebloggedFrom}
+                                <a class="posterlink" href="{ReblogRootURL}"><img src="{ReblogRootPortraitURL-24}" />{ReblogRootName}</a>
+                            {/block:RebloggedFrom}
+                        </div>
+                        <div class="main">
+                            {body}
+                        </div>
+                        <div class="title">
+                        {block:Title}
+                            <h3>{Title}</h3>
+                        {/block:Title}
+                        </div>
+                        <a class="perma" href="{Permalink}"></a>
+                        {block:RebloggedFrom}  
+                            <a class="reblog-link" href="{ReblogParentURL}" data-blog-card-username="{ReblogParentName}"></a>
+                        {/block:RebloggedFrom}
+                        <div class="pop">
+                            <div class="pop-content">
+                                <div class="tags">
+                                    {block:HasTags}
+                                        <ul>
+                                            {block:Tags}
+                                                <li class="tag">
+                                                    <a href="{TagURL}">#{Tag}</a>
+                                                </li>
+                                            {/block:Tags}
+                                        </ul>
+                                    {/block:HasTags}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {/block:Text}
+                {block:Photo}
+                    <div class="post photo">
+                        <div class="poster">
+                            {block:NotReblog}
+                                <a class="posterlink" href="/"><img src="{PortraitURL-24}">naduya-nagi</a>
+                            {/block:NotReblog}
+                            {block:RebloggedFrom}
+                                <a class="posterlink" href="{ReblogRootURL}"><img src="{ReblogRootPortraitURL-24}" />{ReblogRootName}</a>
+                            {/block:RebloggedFrom}
+                        </div>
+                        <div class="main">
+                            <img src="{PhotoURL-250}" alt="{PhotoAlt}"/>
+                        </div>
+                        <a class="perma" href="{Permalink}"></a>
+                        {block:RebloggedFrom}  
+                            <a class="reblog-link" href="{ReblogParentURL}" data-blog-card-username="{ReblogParentName}"></a>
+                        {/block:RebloggedFrom}
+                        <div class="pop">
+                            <div class="pop-content">
+                                <div class="caption">
+                                {block:Caption}
+                                    {Caption}
+                                {/block:Caption}
+                                </div>
+                                <div class="tags">
+                                    {block:HasTags}
+                                        <ul>
+                                            {block:Tags}
+                                                <li class="tag">
+                                                    <a href="{TagURL}">#{Tag}</a>
+                                                </li>
+                                            {/block:Tags}
+                                        </ul>
+                                    {/block:HasTags}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {/block:Photo}
+                {block:Panorama}
+                    <div class="post panorama">
+                        <div class="poster">
+                            {block:NotReblog}
+                                <a class="posterlink" href="/"><img src="{PortraitURL-24}">naduya-nagi</a>
+                            {/block:NotReblog}
+                            {block:RebloggedFrom}
+                                <a class="posterlink" href="{ReblogRootURL}"><img src="{ReblogRootPortraitURL-24}" />{ReblogRootName}</a>
+                            {/block:RebloggedFrom}
+                        </div>
+                        <div class="main">
+                            <img src="{PhotoURL-Panorama}" alt="{PhotoAlt}"/>                           
+                        </div>
+                        <a class="perma" href="{Permalink}"></a>
+                        {block:RebloggedFrom}  
+                            <a class="reblog-link" href="{ReblogParentURL}" data-blog-card-username="{ReblogParentName}"></a>
+                        {/block:RebloggedFrom}
+                        <div class="pop">
+                            <div class="pop-content">
+                                <div class="caption">
+                                {block:Caption}
+                                    {Caption}
+                                {/block:Caption}
+                                </div>
+                                <div class="tags">
+                                    {block:HasTags}
+                                        <ul>
+                                            {block:Tags}
+                                                <li class="tag">
+                                                    <a href="{TagURL}">#{Tag}</a>
+                                                </li>
+                                            {/block:Tags}
+                                        </ul>
+                                    {/block:HasTags}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {/block:Panorama}
+                {block:Photoset}
+                    <div class="post photoset">
+                        <div class="poster">
+                            {block:NotReblog}
+                                <a class="posterlink" href="/"><img src="{PortraitURL-24}">naduya-nagi</a>
+                            {/block:NotReblog}
+                            {block:RebloggedFrom}
+                                <a class="posterlink" href="{ReblogRootURL}"><img src="{ReblogRootPortraitURL-24}" />{ReblogRootName}</a>
+                            {/block:RebloggedFrom}
+                        </div>
+                        <div class="main">
+                            {Photoset}
+                        </div>
+                        <a class="perma" href="{Permalink}"></a>
+                        {block:RebloggedFrom}  
+                            <a class="reblog-link" href="{ReblogParentURL}" data-blog-card-username="{ReblogParentName}"></a>
+                        {/block:RebloggedFrom}
+                        <div class="pop">
+                            <div class="pop-content">
+                                <div class="caption">
+                                {block:Caption}
+                                    {Caption}
+                                {/block:Caption}
+                                </div>
+                                <div class="tags">
+                                    {block:HasTags}
+                                        <ul>
+                                            {block:Tags}
+                                                <li class="tag">
+                                                    <a href="{TagURL}">#{Tag}</a>
+                                                </li>
+                                            {/block:Tags}
+                                        </ul>
+                                    {/block:HasTags}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {/block:Photoset}
+                {block:Quote}
+                    <div class="post quote">
+                        <div class="poster">
+                            {block:NotReblog}
+                                <a class="posterlink" href="/"><img src="{PortraitURL-24}">naduya-nagi</a>
+                            {/block:NotReblog}
+                            {block:RebloggedFrom}
+                                <a class="posterlink" href="{ReblogRootURL}"><img src="{ReblogRootPortraitURL-24}" />{ReblogRootName}</a>
+                            {/block:RebloggedFrom}
+                        </div>
+                        <div class="main">
+                            <blockquote>
+                                <div class="quotecontent">
+                                    {Quote}
+                                <div>
+                                {block:Source}
+                                    <div class="source">
+                                        {Source}
+                                    </div>
+                                {/block:Source}
+                            </blockquote>
+                        </div>
+                        <a class="perma" href="{Permalink}"></a>
+                        {block:RebloggedFrom}  
+                            <a class="reblog-link" href="{ReblogParentURL}" data-blog-card-username="{ReblogParentName}"></a>
+                        {/block:RebloggedFrom}
+                        <div class="pop">
+                            <div class="pop-content">
+                                <div class="caption">
+                                {block:Caption}
+                                    {Caption}
+                                {/block:Caption}
+                                </div>
+                                <div class="tags">
+                                    {block:HasTags}
+                                        <ul>
+                                            {block:Tags}
+                                                <li class="tag">
+                                                    <a href="{TagURL}">#{Tag}</a>
+                                                </li>
+                                            {/block:Tags}
+                                        </ul>
+                                    {/block:HasTags}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {/block:Quote}
+                {block:Link}
+                    <div class="post link">
+                        <div class="poster">
+                            {block:NotReblog}
+                                <a class="posterlink" href="/"><img src="{PortraitURL-24}">naduya-nagi</a>
+                            {/block:NotReblog}
+                            {block:RebloggedFrom}
+                                <a class="posterlink" href="{ReblogRootURL}"><img src="{ReblogRootPortraitURL-24}" />{ReblogRootName}</a>
+                            {/block:RebloggedFrom}
+                        </div>
+                        <div class="main">
+                            {block:Thumbnail}
+                                <img class="thumbnail" src="{Thumbnail}" />
+                            {/block:Thumbnail}
+                            <div class="linkname">
+                                <h5>{Name}</h5>
+                                <a href="{URL}">{Host}</a>
+                                {block:Description}
+                                    {Description}
+                                {/block:Description}
+                            </div>
+                        </div>
+                        <a class="perma" href="{Permalink}"></a>
+                        {block:RebloggedFrom}  
+                            <a class="reblog-link" href="{ReblogParentURL}" data-blog-card-username="{ReblogParentName}"></a>
+                        {/block:RebloggedFrom}
+                        <div class="pop">
+                            <div class="pop-content">
+                                <div class="caption">
+                                {block:Caption}
+                                    {Caption}
+                                {/block:Caption}
+                                </div>
+                                <div class="tags">
+                                    {block:HasTags}
+                                        <ul>
+                                            {block:Tags}
+                                                <li class="tag">
+                                                    <a href="{TagURL}">#{Tag}</a>
+                                                </li>
+                                            {/block:Tags}
+                                        </ul>
+                                    {/block:HasTags}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {/block:Link}
+                {block:Chat}
+                    <div class="post chat">
+                        <div class="poster">
+                            {block:NotReblog}
+                                <a class="posterlink" href="/"><img src="{PortraitURL-24}">naduya-nagi</a>
+                            {/block:NotReblog}
+                            {block:RebloggedFrom}
+                                <a class="posterlink" href="{ReblogRootURL}"><img src="{ReblogRootPortraitURL-24}" />{ReblogRootName}</a>
+                            {/block:RebloggedFrom}
+                        </div>
+                        <div class="title">
+                        {block:Title}
+                            <h3>{Title}</h3>
+                        {/block:Title}
+                        </div>
+                        <div class="main">
+                            <ul class="chat">
+                                {block:Lines}
+                                    <li class="chattext {Alt} user_{UserNumber}">
+                                        {block:Label}
+                                            <span class="label">{Label}</span>
+                                        {/block:Label}{Line}
+                                    </li>
+                                {/block:Lines}
+                            </ul>
+                        </div>
+                        <a class="perma" href="{Permalink}"></a>
+                        {block:RebloggedFrom}  
+                            <a class="reblog-link" href="{ReblogParentURL}" data-blog-card-username="{ReblogParentName}"></a>
+                        {/block:RebloggedFrom}
+                        <div class="pop">
+                            <div class="pop-content">
+                                <div class="caption">
+                                {block:Caption}
+                                    {Caption}
+                                {/block:Caption}
+                                </div>
+                                <div class="tags">
+                                    {block:HasTags}
+                                        <ul>
+                                            {block:Tags}
+                                                <li class="tag">
+                                                    <a href="{TagURL}">#{Tag}</a>
+                                                </li>
+                                            {/block:Tags}
+                                        </ul>
+                                    {/block:HasTags}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {block:Chat}
+                {block:Video}
+                    <div class="post video">
+                        <div class="poster">
+                            {block:NotReblog}
+                                <a class="posterlink" href="/"><img src="{PortraitURL-24}">naduya-nagi</a>
+                            {/block:NotReblog}
+                            {block:RebloggedFrom}
+                                <a class="posterlink" href="{ReblogRootURL}"><img src="{ReblogRootPortraitURL-24}" />{ReblogRootName}</a>
+                            {/block:RebloggedFrom}
+                        </div>
+                        <div class="main">
+                            {Video-250}
+                        </div>
+                        <a class="perma" href="{Permalink}"></a>
+                        {block:RebloggedFrom}  
+                            <a class="reblog-link" href="{ReblogParentURL}" data-blog-card-username="{ReblogParentName}"></a>
+                        {/block:RebloggedFrom}
+                        <div class="pop">
+                            <div class="pop-content">
+                                <div class="caption">
+                                {block:Caption}
+                                    {Caption}
+                                {/block:Caption}
+                                </div>
+                                <div class="tags">
+                                    {block:HasTags}
+                                        <ul>
+                                            {block:Tags}
+                                                <li class="tag">
+                                                    <a href="{TagURL}">#{Tag}</a>
+                                                </li>
+                                            {/block:Tags}
+                                        </ul>
+                                    {/block:HasTags}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {/block:Video}
+                {block:Audio}
+                    <div class="post audio">
+                        <div class="poster">
+                            {block:NotReblog}
+                                <a class="posterlink" href="/"><img src="{PortraitURL-24}">naduya-nagi</a>
+                            {/block:NotReblog}
+                            {block:RebloggedFrom}
+                                <a class="posterlink" href="{ReblogRootURL}"><img src="{ReblogRootPortraitURL-24}" />{ReblogRootName}</a>
+                            {/block:RebloggedFrom}
+                        </div>
+                        <div class="main">
+                            {AudioEmbed-250}
+                        </div>
+                        <a class="perma" href="{Permalink}"></a>
+                        {block:RebloggedFrom}  
+                            <a class="reblog-link" href="{ReblogParentURL}" data-blog-card-username="{ReblogParentName}"></a>
+                        {/block:RebloggedFrom}
+                        <div class="pop">
+                            <div class="pop-content">
+                                <div class="caption">
+                                {block:Caption}
+                                    {Caption}
+                                {/block:Caption}
+                                </div>
+                                <div class="tags">
+                                    {block:HasTags}
+                                        <ul>
+                                            {block:Tags}
+                                                <li class="tag">
+                                                    <a href="{TagURL}">#{Tag}</a>
+                                                </li>
+                                            {/block:Tags}
+                                        </ul>
+                                    {/block:HasTags}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {/block:Audio}
+            {/block:Posts}
+            {block:Pagination}
+            <div class="{block:HideTitle}{block:HideDescription}no-title-desc {/block:HideDescription}{/block:HideTitle}nav-wrapper nav-responsive">
+                <nav class="nav-menu">
+                    <ul class="inline-nav">
+                        {block:PreviousPage}
+                            <li class="nav-item nav-item--previous">
+                                <div class="nav-label prev">Prev</div>
+                                <a href="{PreviousPage}"> </a>
+                            </li>
+                        {/block:PreviousPage}
+                        {block:NextPage}
+                            <li class="nav-item nav-item--next">
+                                <div class="nav-label next">Next</div>
+                                <a href="{NextPage}"> </a>
+                            </li>
+                        {/block:NextPage}
+                    </ul>
+                    <ul class="inline-nav-here">
+                        <li class="nav-item--here">
+                            <ol class="pagejump">
+                                {block:JumpPagination length="5"}
+                                    {block:CurrentPage}
+                                        <li class="jump jump-current">
+                                            <div class="here">{CurrentPage}/{TotalPages}</div>
+                                            <div class="nav-label lab-current">{PageNumber}</div>
+                                        </li>
+                                    {block:CurrentPage}
+                                    {block:JumpPage}
+                                        <li class="jump jump-jump">
+                                            <div class="nav-label">{PageNumber}</div>
+                                            <a href="{URL}"></a>
+                                        </li>
+                                    {/block:JumpPage}
+                                {/block:JumpPagination}
+                            </ol>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            {block:Pagination}
+        </section>
+        {/block:IndexPage}
+        {block:PermalinkPage}
+            <section class="permalinkpage">
+            {block:Posts}
+                <div class="perma-page">
+                    <header class="post-header">
+                        {block:NotReblog}
+                            <a class="header-poster" href="/"><img src="{PortraitURL-24}">naduya-nagi</a>
+                        {/block:NotReblog}
+                        {block:RebloggedFrom}
+                            <a class="header-poster" href="{ReblogRootURL}"><img src="{ReblogRootPortraitURL-24}" />{ReblogRootName}</a>
+                        {/block:RebloggedFrom}
+                    </header>
+                    <div class="perma-main">
+                        {block:Text}
+                            <div class="perma-text">
+                                <h4>{block:Title}{Title}{/block:Title}</h4>
+                                {Body}
+                            </div>
+                        {/block:Text}
+                        {block:Photo}
+                            <div class="perma-photo">
+                                <img src="{PhotoURL-500}" alt="{PhotoAlt}"/>
+                            </div>
+                        {/block:Photo}
+                        {block:Panorama}
+                            <div class="perma-panorama">
+                                {LinkOpenTag}
+                                    <img src="{PhotoURL-Panorama}" alt="{PhotoAlt}" />
+                                {LinkCloseTag}
+                            </div>
+                        {/block:Panorama}
+                        {block:Photoset}
+                            <div class="perma-photoset">
+                                {Photoset}
+                            </div>
+                        {/block:Photoset}
+                        {block:Quote}
+                            <div class="perma-quote">
+                                <blockquote>
+                                    {Quote}
+                                </blockquote>
+                                {block:Source}
+                                    {Source}
+                                {/block:Source}
+                            </div>
+                        {/block:Quote}
+                        {block:Link}
+                            <div class="perma-link">
+                                <div class="linkcard">
+                                    {block:Thumbnail}
+                                        <img class="thumbnail" src="{Thumbnail}" />
+                                    {/block:Thumbnail}
+                                    <div class="linkname">
+                                        <h5>{Name}</h5>
+                                        <a href="{URL}">{Host}</a>
+                                    </div>
+                                    <a class="cardlink" href="{URL}"></a>
+                                </div>
+                                {block:Description}
+                                    {Description}
+                                {/block:Description}
+                            </div>
+                        {/block:Link}
+                        {block:Chat}
+                            <div class="perma-chat">
+                                <h4>{block:Title}{Title}{/block:Title}</h4>
+                                <ul class="chat">
+                                {block:Lines}
+                                    <li class="chattext {Alt} user_{UserNumber}">
+                                        {block:Label}
+                                            <span class="label">{Label}</span>
+                                        {/block:Label}{Line}
+                                    </li>
+                                {/block:Lines}
+                                </ul>
+                            </div>
+                        {/block:Chat}
+                        {block:Audio}
+                            <div class="perma-audio">
+                                {block:AudioEmbed}
+                                    {AudioEmbed}
+                                {/block:AudioEmbed}
+                                {block:ExternalAudio}
+                                    from <a href="{ExternalAudioURL}">{ExternalAudioURL}</a>
+                                {/block:ExternalAudio}
+                            </div>
+                        {/block:Audio}
+                        {block:Video}
+                            <div class="perma-video">
+                                {Video-700}
+                            </div>
+                        {/block:Video}
+                    </div>
+                    <div class="perma-caption">
+                        {block:Caption}
+                            {Caption}
+                        {/block:Caption}
+                    </div>
+                    {block:HasTags}
+                        <div class="tags">
+                            <ul>
+                                {block:Tags}
+                                    <li class="tag">
+                                        <a href="{TagURL}">#{Tag}</a>
+                                    </li>
+                                {/block:Tags}
+                            </ul>
+                        </div>
+                    {/block:HasTags}
+                    <div class="date">
+                        {block:Date}
+                            {Year}/{MonthNumberWithZero}/{DayOfMonthWithZero} {24HourWithZero}:{Minutes}:{Seconds}
+                        {/block:Date}
+                    </div>
+                {/block:Posts}
+            </div>
+            </section>
+            <nav class="nav-menu">
+                <ul class="inline-nav">
+                {block:PermalinkPagination}
+                    {block:PreviousPost}
+                    <li class="nav-item nav-item--previous">
+                        <div class="nav-label prev">Prev</div>
+                        <a href="{PreviousPost}"> </a>
+                    </li>
+                    {/block:PreviousPost}
+                    {block:NextPost}
+                    <li class="nav-item nav-item--next">
+                        <div class="nav-label next">Next</div>
+                        <a href="{NextPost}"> </a>
+                    </li>
+                    {block:NextPost}
+                {/block:PermalinkPagination}
+                </ul>
+            </nav>
+        {/block:PermalinkPage}
+    </body>
+</html>
