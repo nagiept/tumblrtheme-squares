@@ -39,16 +39,10 @@
                 vertical-align: top;
             }
             
-            figure {
-                width: 128px;
-                height: 128px;
-                margin: 0;
-                padding: 0;
-            }
-            
             p {
                 margin-top: .25em;
                 margin-bottom: .25em;
+                word-break: break-word;
             }
             
             blockquote {
@@ -56,6 +50,25 @@
                 margin-left: 2px;
                 padding-left: 2px;
                 border-left: solid 2px {TitleColor};
+            }
+            
+            figure {
+                margin: 0;
+                overflow: hidden;
+                max-width: 100%;
+                height: auto;
+            }
+            
+            .pop iframe.embed_iframe {
+                width: 100%;
+                height: auto;
+            }
+            
+            .avator {
+                width: 128px;
+                height: 128px;
+                margin: 0;
+                padding: 0;
             }
             
             .header-ul {
@@ -229,6 +242,10 @@
                 margin: 2px;
                 color: #fff;
                 text-overflow: ellipsis;
+            }
+            
+            .main > p:first-child, .caption > p:first-child, .perma-caption > p:first-child {
+                display: none;
             }
             
             .photo .main, .panorama .main, .photoset .main, .video .main, .audio .main{
@@ -457,12 +474,12 @@
                                 <a href="/likes"></a>
                             </li>
                         {/block:Likes}
-                        {block:ShareFollowing}
+                        
                             <li class="nav-item nav-item--following {block:FollowingPage}current-page{/block:FollowingPage}">
                                 <div class="nav-label">{lang:Following}</div>
                                 <a href="/following"></a>
                             </li>
-                        {/block:ShareFollowing}
+                        
                         {block:AskEnabled}
                             <li class="nav-item nav-item--ask {block:AskPage}current-page{/block:AskPage}">
                                 <div class="nav-label">{AskLabel}</div>
@@ -921,7 +938,7 @@
                     </ul>
                 </nav>
             </div>
-            {block:Pagination}
+            {/block:Pagination}
         </section>
         {/block:IndexPage}
         {block:PermalinkPage}
@@ -1060,5 +1077,65 @@
                 </ul>
             </nav>
         {/block:PermalinkPage}
+        {block:FollowingPage}
+                            {block:Blogs}
+                                <div class="blog-card" style="background-color: {BackgroundColor};">
+                                    <div class="indash-tumblelog-compact">
+                                        <div class="indash-header-wrapper{block:HideHeaderImage} no-header-image{/block:HideHeaderImage}" style="color: {TitleColor}">
+                                            <div class="navigation">
+                                                <div class="navigation-inner">
+                                                    <h3>
+                                                        <a href="{BlogURL}" target="_blank" class="blog-name" {block:HideHeaderImage}style="color: {AccentColor};"{/block:HideHeaderImage}>
+                                                            <span class="name">{Username}</span>
+                                                        </a>
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                            {block:ShowHeaderImage}
+                                            <div class="header-image-wrapper">
+                                                <div class="header-image{block:StretchHeaderImage} cover{/block:StretchHeaderImage}{block:NoStretchHeaderImage} contain{/block:NoStretchHeaderImage}" style="background-image:url('{HeaderImage}')">
+                                                    <a href="{BlogURL}" target="_blank">
+                                                        <img src="{HeaderImage}" alt="{Title}">
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            {/block:ShowHeaderImage}
+                                            {Block:ShowAvatar}
+                                            <div class="avatar {AvatarShape}" style="background-color: {BackgroundColor}; background-image:url('{PortraitURL-128}'); color: {BackgroundColor}">
+                                                <a href="{BlogURL}" target="_blank"><img src="{PortraitURL-128}" alt="{Title}"></a>
+                                            </div>
+                                            {/Block:ShowAvatar}
+                                            <div class="info-wrapper">
+                                                <div class="info">
+                                                    {block:ShowTitle}
+                                                    <h1 class="title" style="font-family:'{TitleFont}', sans-serif; font-weight: {TitleFontWeight}">{Title}</h1>
+                                                    {/block:ShowTitle}
+                                                    {block:ShowDescription}
+                                                    <div class="description" style="color: {TitleColor}">
+                                                        <div class="description-inner">{Description}</div>
+                                                    </div>
+                                                    {/block:ShowDescription}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="description-gradient" style="background: linear-gradient(rgba({RGBBackgroundColor}, 0), {BackgroundColor});"></div>
+                                    </div>
+                                    <div class="highlighted-posts">
+                                        {Block:HighlightedPosts}
+                                        <div class="post post-micro post-type-{PostType}" data-type="{PostType}">
+                                            <div class="post-content">
+                                                <div class="post-content-inner">
+                                                    <div class="post-thumbnail-container" style="background-image: url('{PhotoURL-250}');"></div>
+                                                </div>
+                                            </div>
+                                            <div class="post-glass post-micro-glass">
+                                                <a target="_blank" class="permalink" href="{Permalink}"></a>
+                                            </div>
+                                        </div>
+                                        {/Block:HighlightedPosts}
+                                    </div>
+                                </div>
+                            {/block:Blogs}
+                        {/block:FollowingPage}
     </body>
 </html>
